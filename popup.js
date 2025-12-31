@@ -5,6 +5,10 @@ document.addEventListener('DOMContentLoaded', () => {
   // 加载保存的设置
   loadSettings();
   
+  // 初始化复制按钮为禁用状态
+  const copyBtn = document.getElementById('copyBtn');
+  copyBtn.disabled = true;
+  
   // 绑定总结按钮点击事件
   const summaryBtn = document.getElementById('summaryBtn');
   summaryBtn.addEventListener('click', () => {
@@ -16,10 +20,19 @@ document.addEventListener('DOMContentLoaded', () => {
   const summaryLanguage = document.getElementById('summaryLanguage');
   const apiKey = document.getElementById('apiKey');
   const modelSelect = document.getElementById('modelSelect');
+  const sourceRadios = document.querySelectorAll('input[name="source"]');
   
   summaryLength.addEventListener('change', saveSettings);
   summaryLanguage.addEventListener('change', saveSettings);
   modelSelect.addEventListener('change', saveSettings);
+  
+  // 绑定来源选择事件
+  sourceRadios.forEach(radio => {
+    radio.addEventListener('change', saveSettings);
+  });
+  
+  // 绑定复制按钮事件
+  copyBtn.addEventListener('click', copySummary);
   
   // 当 API Key 变化时，自动加载可用模型
   apiKey.addEventListener('change', async () => {
@@ -180,7 +193,7 @@ function generateTraditionalSummary(content, settings) {
 
 // 加载设置
 function loadSettings() {
-  chrome.storage.local.get(['summaryLength', 'summaryLanguage', 'apiKey', 'selectedModel'], async (result) => {
+  chrome.storage.local.get(['summaryLength', 'summaryLanguage', 'apiKey', 'selectedModel', 'selectedSource'], async (result) => {
     if (result.summaryLength) {
       document.getElementById('summaryLength').value = result.summaryLength;
     }
@@ -192,6 +205,12 @@ function loadSettings() {
       // 如果有 API Key，加载可用模型
       await loadAvailableModels();
     }
+    if (result.selectedSource) {
+      const sourceRadio = document.querySelector(`input[name="source"][value="${result.selectedSource}"]`);
+      if (sourceRadio) {
+        sourceRadio.checked = true;
+      }
+    }
   });
 }
 
@@ -201,12 +220,14 @@ function saveSettings() {
   const summaryLanguage = document.getElementById('summaryLanguage').value;
   const apiKey = document.getElementById('apiKey').value;
   const selectedModel = document.getElementById('modelSelect').value;
+  const selectedSource = document.querySelector('input[name="source"]:checked')?.value || '一群';
   
   chrome.storage.local.set({
     summaryLength: summaryLength,
     summaryLanguage: summaryLanguage,
     apiKey: apiKey,
-    selectedModel: selectedModel
+    selectedModel: selectedModel,
+    selectedSource: selectedSource
   });
 }
 
@@ -214,12 +235,14 @@ function saveSettings() {
 async function summarizeArticle() {
   const summaryBtn = document.getElementById('summaryBtn');
   const loading = document.getElementById('loading');
-  const summaryResult = document.getElementById('summaryResult');
+  const summaryTextarea = document.getElementById('summaryTextarea');
+  const copyBtn = document.getElementById('copyBtn');
   
   // 显示加载状态
   summaryBtn.disabled = true;
   loading.style.display = 'block';
-  summaryResult.innerHTML = '';
+  summaryTextarea.value = '';
+  copyBtn.disabled = true;
   
   try {
     // 获取当前活动标签页
@@ -235,28 +258,67 @@ async function summarizeArticle() {
     
     if (content) {
       // 获取当前设置
-      const settings = await chrome.storage.local.get(['summaryLength', 'summaryLanguage', 'apiKey', 'selectedModel']);
+      const settings = await chrome.storage.local.get(['summaryLength', 'summaryLanguage', 'apiKey', 'selectedModel', 'selectedSource']);
       
       try {
         // 直接调用Gemini API生成总结
         const summary = await generateGeminiSummary(content, settings);
-        summaryResult.innerHTML = summary;
+        
+        // 格式化输出结果
+        const formattedSummary = formatSummary(summary, tab.title, tab.url, settings.selectedSource || '一群');
+        summaryTextarea.value = formattedSummary;
+        copyBtn.disabled = false;
       } catch (error) {
         console.error('Gemini API总结失败:', error);
         // 使用备用总结方法
         const fallbackSummary = generateTraditionalSummary(content, settings);
-        summaryResult.innerHTML = `<div class="error">${error.message}</div><br/>${fallbackSummary}`;
+        const formattedSummary = formatSummary(fallbackSummary, tab.title, tab.url, settings.selectedSource || '一群');
+        summaryTextarea.value = `${error.message}\n\n${formattedSummary}`;
+        copyBtn.disabled = false;
       }
     } else {
-      summaryResult.innerHTML = '<div class="error">无法获取网页内容，请重试</div>';
+      summaryTextarea.value = '无法获取网页内容，请重试';
     }
   } catch (error) {
     console.error('总结失败:', error);
-    summaryResult.innerHTML = `<div class="error">总结失败: ${error.message}</div>`;
+    summaryTextarea.value = `总结失败: ${error.message}`;
   } finally {
     // 隐藏加载状态
     summaryBtn.disabled = false;
     loading.style.display = 'none';
+  }
+}
+
+// 格式化总结输出
+function formatSummary(summary, title, url, source) {
+  return `转自 ${source} 成员的原创技术文章
+
+${title}
+${url}
+
+${summary}`;
+}
+
+// 复制总结内容
+async function copySummary() {
+  const summaryTextarea = document.getElementById('summaryTextarea');
+  const copyBtn = document.getElementById('copyBtn');
+  
+  try {
+    await navigator.clipboard.writeText(summaryTextarea.value);
+    
+    // 显示复制成功提示
+    const originalText = copyBtn.textContent;
+    copyBtn.textContent = '复制成功！';
+    copyBtn.style.backgroundColor = '#137333';
+    
+    setTimeout(() => {
+      copyBtn.textContent = originalText;
+      copyBtn.style.backgroundColor = '#34a853';
+    }, 2000);
+  } catch (error) {
+    console.error('复制失败:', error);
+    alert('复制失败，请手动复制');
   }
 }
 
