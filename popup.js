@@ -291,7 +291,7 @@ async function summarizeArticle() {
 
 // 格式化总结输出
 function formatSummary(summary, title, url, source) {
-  return `转自 ${source} 成员的原创技术文章
+  return `🔊 转自 ${source} 成员的原创技术文章
 
 ${title}
 ${url}
