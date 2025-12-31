@@ -1,0 +1,16 @@
+{
+  "name": "gdgxianarticlesummary",
+  "version": "1.0.0",
+  "description": "一个基于Chrome AI技术的浏览器扩展，帮助用户一键智能总结网页文章内容，提高阅读效率。",
+  "main": "background.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "sharp": "^0.34.5"
+  }
+}

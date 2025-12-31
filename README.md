@@ -1,14 +1,17 @@
 # GDG西安文章总结助手
 
-一个Chrome浏览器扩展，帮助用户一键总结网页文章内容，提高阅读效率。
+一个基于Chrome AI技术的浏览器扩展，帮助用户一键智能总结网页文章内容，提高阅读效率。
 
 ## 功能特性
 
+- 🤖 **智能AI总结** - 使用Chrome内置AI技术进行智能文章总结
 - 🚀 一键总结当前网页文章内容
 - ⚙️ 可调整总结长度（简短/中等/详细）
 - 🌐 支持中英文总结
 - 💾 自动保存用户设置
 - 🎨 简洁易用的界面设计
+- 🔍 智能文章内容提取
+- ⚡ 多种AI提供商支持（Chrome AI、Web AI等）
 
 ## 安装方法
 
@@ -32,6 +35,9 @@
 - CSS3
 - JavaScript (ES6+)
 - Chrome Extension API
+- **Chrome AI API** - 智能文章总结
+- **Web AI API** - 备用AI服务
+- **Readability.js** - 智能内容提取
 
 ## 项目结构
 
@@ -54,16 +60,25 @@ GDGXianArticleSummary/
 
 ### 核心功能实现
 
-1. **内容提取**：通过`content.js`脚本提取网页中的主要文章内容
-2. **总结逻辑**：目前使用简单的模拟总结算法，实际项目中可替换为AI API调用
-3. **后台通信**：使用Chrome Extension的消息传递机制，实现popup、background和content script之间的通信
-4. **设置保存**：使用Chrome的storage API保存用户的设置偏好
+1. **智能内容提取**：使用`content.js`脚本结合Readability.js和AI技术智能提取网页中的主要文章内容
+2. **AI总结逻辑**：使用Chrome AI API进行智能文章总结，支持多种总结长度和语言
+3. **多级备用方案**：当Chrome AI不可用时，自动降级使用Web AI API或传统总结方法
+4. **后台通信**：使用Chrome Extension的消息传递机制，实现popup、background和content script之间的通信
+5. **设置保存**：使用Chrome的storage API保存用户的设置偏好
+
+### AI功能集成
+
+- **Chrome AI优先**：优先使用Chrome内置AI API进行文章总结
+- **Web AI备用**：当Chrome AI不可用时，自动切换到Web AI API
+- **传统方法兜底**：所有AI方法都失败时，使用传统智能总结算法
+- **智能内容提取**：结合多种算法智能识别和提取文章主体内容
 
 ### 扩展权限说明
 
 - `activeTab`：获取当前活动标签页
 - `scripting`：执行脚本
 - `storage`：保存用户设置
+- `ai`：使用Chrome AI功能（需要Chrome 122+版本）
 
 ## 自定义开发
 

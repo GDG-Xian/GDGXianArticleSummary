@@ -6,8 +6,8 @@
   <title>GDG西安文章总结助手</title>
   <style>
     body {
-      width: 350px;
-      height: 400px;
+      width: 380px;
+      height: 580px;
       font-family: Arial, sans-serif;
       padding: 15px;
       box-sizing: border-box;
@@ -36,6 +36,10 @@
     .btn:hover {
       background-color: #3367d6;
     }
+    .btn:disabled {
+      background-color: #ccc;
+      cursor: not-allowed;
+    }
     .settings {
       margin-bottom: 15px;
     }
@@ -48,12 +52,31 @@
       font-size: 14px;
       color: #555;
     }
-    .setting-item select {
+    .setting-item select,
+    .setting-item input[type="text"],
+    .setting-item input[type="password"] {
       width: 100%;
       padding: 8px;
       border: 1px solid #ddd;
       border-radius: 4px;
       font-size: 14px;
+      box-sizing: border-box;
+    }
+    .setting-item input[type="password"] {
+      font-family: monospace;
+    }
+    .api-help {
+      font-size: 11px;
+      color: #666;
+      margin-top: 5px;
+      line-height: 1.4;
+    }
+    .api-help a {
+      color: #4285f4;
+      text-decoration: none;
+    }
+    .api-help a:hover {
+      text-decoration: underline;
     }
     .summary-result {
       flex: 1;
@@ -75,6 +98,13 @@
       color: #d93025;
       text-align: center;
       padding: 10px;
+      font-size: 13px;
+    }
+    .success {
+      color: #137333;
+      text-align: center;
+      padding: 10px;
+      font-size: 13px;
     }
   </style>
 </head>
@@ -85,6 +115,19 @@
     <button class="btn" id="summaryBtn">一键总结当前文章</button>
     
     <div class="settings">
+      <div class="setting-item">
+        <label for="apiKey">Gemini API Key：</label>
+        <input type="password" id="apiKey" placeholder="请输入您的Gemini API Key">
+        <div class="api-help">
+          获取API Key: <a href="https://makersuite.google.com/app/apikey" target="_blank">Google AI Studio</a>
+        </div>
+      </div>
+      <div class="setting-item">
+        <label for="modelSelect">选择模型：</label>
+        <select id="modelSelect">
+          <option value="">请先输入 API Key</option>
+        </select>
+      </div>
       <div class="setting-item">
         <label for="summaryLength">总结长度：</label>
         <select id="summaryLength">

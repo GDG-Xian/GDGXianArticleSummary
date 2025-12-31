@@ -2,22 +2,26 @@
   "manifest_version": 3,
   "name": "GDG西安文章总结助手",
   "version": "1.0.0",
-  "description": "一键总结网页文章内容，提高阅读效率",
+  "description": "使用Gemini AI技术一键总结网页文章内容，提高阅读效率",
   "permissions": [
     "activeTab",
     "scripting",
     "storage"
   ],
   "action": {
-    "default_popup": "popup.html"
-  },
-  "background": {
-    "service_worker": "background.js"
-  },
-  "content_scripts": [
-    {
-      "matches": ["<all_urls>"],
-      "js": ["content.js"]
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "images/icon16.png",
+      "32": "images/icon32.png",
+      "48": "images/icon48.png",
+      "128": "images/icon128.png"
     }
-  ]
+  },
+  "icons": {
+    "16": "images/icon16.png",
+    "32": "images/icon32.png",
+    "48": "images/icon48.png",
+    "128": "images/icon128.png"
+  },
+  "minimum_chrome_version": "114"
 }
