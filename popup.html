@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GDG西安文章总结助手</title>
+  <style>
+    body {
+      width: 350px;
+      height: 400px;
+      font-family: Arial, sans-serif;
+      padding: 15px;
+      box-sizing: border-box;
+    }
+    h1 {
+      font-size: 18px;
+      margin-top: 0;
+      color: #333;
+      text-align: center;
+    }
+    .container {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+    .btn {
+      background-color: #4285f4;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+      margin-bottom: 15px;
+    }
+    .btn:hover {
+      background-color: #3367d6;
+    }
+    .settings {
+      margin-bottom: 15px;
+    }
+    .setting-item {
+      margin-bottom: 10px;
+    }
+    .setting-item label {
+      display: block;
+      margin-bottom: 5px;
+      font-size: 14px;
+      color: #555;
+    }
+    .setting-item select {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 14px;
+    }
+    .summary-result {
+      flex: 1;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      padding: 10px;
+      overflow-y: auto;
+      font-size: 14px;
+      line-height: 1.5;
+      background-color: #f9f9f9;
+    }
+    .loading {
+      display: none;
+      text-align: center;
+      color: #666;
+      padding: 20px;
+    }
+    .error {
+      color: #d93025;
+      text-align: center;
+      padding: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>GDG西安文章总结助手</h1>
+    
+    <button class="btn" id="summaryBtn">一键总结当前文章</button>
+    
+    <div class="settings">
+      <div class="setting-item">
+        <label for="summaryLength">总结长度：</label>
+        <select id="summaryLength">
+          <option value="short">简短</option>
+          <option value="medium" selected>中等</option>
+          <option value="long">详细</option>
+        </select>
+      </div>
+      <div class="setting-item">
+        <label for="summaryLanguage">总结语言：</label>
+        <select id="summaryLanguage">
+          <option value="zh-CN" selected>中文</option>
+          <option value="en-US">英文</option>
+        </select>
+      </div>
+    </div>
+    
+    <div class="loading" id="loading">正在总结...请稍候</div>
+    
+    <div class="summary-result" id="summaryResult">
+      点击"一键总结当前文章"按钮开始总结
+    </div>
+  </div>
+  
+  <script src="popup.js"></script>
+</body>
+</html>
