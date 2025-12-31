@@ -6,13 +6,10 @@
   "permissions": [
     "activeTab",
     "scripting",
-    "storage",
-    "tabs"
+    "storage"
   ],
-  "background": {
-    "service_worker": "background.js"
-  },
   "action": {
+    "default_popup": "popup.html",
     "default_icon": {
       "16": "images/icon16.png",
       "32": "images/icon32.png",

@@ -69,10 +69,13 @@ async function loadAvailableModels() {
     }
     
     // 筛选支持 generateContent 的模型
-    const supportedModels = data.models.filter(model => 
-      model.supportedGenerationMethods && 
-      model.supportedGenerationMethods.includes('generateContent')
-    );
+    const supportedModels = data.models
+      .filter(model =>
+        model.displayName.includes('Gemini') &&
+        model.supportedGenerationMethods && 
+        model.supportedGenerationMethods.includes('generateContent')
+      )
+      .sort((a, b) => (a.displayName).localeCompare(b.displayName));
     
     if (supportedModels.length === 0) {
       modelSelect.innerHTML = '<option value="">没有支持 generateContent 的模型</option>';
@@ -86,7 +89,7 @@ async function loadAvailableModels() {
     supportedModels.forEach(model => {
       const option = document.createElement('option');
       option.value = model.name;
-      option.textContent = model.displayName || model.name;
+      option.textContent = model.displayName;
       modelSelect.appendChild(option);
     });
     
@@ -297,7 +300,7 @@ async function summarizeArticle() {
 // 格式化总结输出
 function formatSummary(summary, title, url, source, modelName) {
   const modelInfo = modelName ? `[使用 ${modelName} 总结]` : '';
-  return `🔊 转自 ${source} 成员的原创技术文章
+  return `🔊 转发 ${source} 成员的原创技术文章
 
 ${title}
 ${url}
