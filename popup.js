@@ -264,15 +264,20 @@ async function summarizeArticle() {
         // 直接调用Gemini API生成总结
         const summary = await generateGeminiSummary(content, settings);
         
+        // 获取模型显示名称
+        const modelSelect = document.getElementById('modelSelect');
+        const selectedOption = modelSelect.options[modelSelect.selectedIndex];
+        const modelName = selectedOption ? selectedOption.textContent : settings.selectedModel;
+        
         // 格式化输出结果
-        const formattedSummary = formatSummary(summary, tab.title, tab.url, settings.selectedSource || '一群');
+        const formattedSummary = formatSummary(summary, tab.title, tab.url, settings.selectedSource || '一群', modelName);
         summaryTextarea.value = formattedSummary;
         copyBtn.disabled = false;
       } catch (error) {
         console.error('Gemini API总结失败:', error);
         // 使用备用总结方法
         const fallbackSummary = generateTraditionalSummary(content, settings);
-        const formattedSummary = formatSummary(fallbackSummary, tab.title, tab.url, settings.selectedSource || '一群');
+        const formattedSummary = formatSummary(fallbackSummary, tab.title, tab.url, settings.selectedSource || '一群', '');
         summaryTextarea.value = `${error.message}\n\n${formattedSummary}`;
         copyBtn.disabled = false;
       }
@@ -290,13 +295,16 @@ async function summarizeArticle() {
 }
 
 // 格式化总结输出
-function formatSummary(summary, title, url, source) {
+function formatSummary(summary, title, url, source, modelName) {
+  const modelInfo = modelName ? `[使用 ${modelName} 总结]` : '';
   return `🔊 转自 ${source} 成员的原创技术文章
 
 ${title}
 ${url}
 
-${summary}`;
+${summary}
+
+${modelInfo}`;
 }
 
 // 复制总结内容

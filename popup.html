@@ -5,13 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>GDG西安文章总结助手</title>
   <style>
-    body {
-      width: 800px;
-      height: 600px;
+    html, body {
       font-family: Arial, sans-serif;
-      padding: 15px;
-      box-sizing: border-box;
       margin: 0;
+      padding: 15px;
     }
     h1 {
       font-size: 18px;
@@ -23,23 +20,23 @@
     .container {
       display: flex;
       gap: 20px;
-      height: calc(100% - 50px);
+      height: 500px;
     }
     .left-panel {
-      flex: 0 0 350px;
+      width: 400px;
       display: flex;
       flex-direction: column;
-      gap: 15px;
+      gap: 10px;
     }
     .right-panel {
-      flex: 1;
+      width: 400px;
       display: flex;
       flex-direction: column;
       gap: 10px;
     }
     .settings {
       flex: 1;
-      overflow-y: auto;
+      overflow: hidden;
     }
     .setting-item {
       margin-bottom: 15px;
@@ -131,12 +128,20 @@
       line-height: inherit;
       background: transparent;
       outline: none;
+      overflow: hidden;
+      box-sizing: border-box;
+    }
+    .summary-result textarea::-webkit-scrollbar {
+      display: none;
+    }
+    .summary-result textarea::-moz-scrollbar {
+      display: none;
     }
     .copy-btn {
       background-color: #34a853;
       color: white;
       border: none;
-      padding: 10px 20px;
+      padding: 12px 20px;
       border-radius: 4px;
       cursor: pointer;
       font-size: 14px;
