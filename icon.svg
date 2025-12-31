@@ -1,0 +1,19 @@
+<svg width="128" height="128" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg">
+  <!-- 最终版：AI字样在笔记内部居中，移除多余元素 -->
+  
+  <!-- 笔记：占画布90%面积的矩形 -->
+  <rect x="6.4" y="6.4" width="115.2" height="115.2" rx="8" 
+        fill="#ffffff" stroke="#4285f4" stroke-width="3"/>
+  
+  <!-- 笔记内部线条：上方部分 -->
+  <rect x="19.2" y="25.6" width="89.6" height="4" fill="#5f6368" rx="2"/>
+  <rect x="19.2" y="38.4" width="70.4" height="4" fill="#5f6368" rx="2"/>
+  <rect x="19.2" y="51.2" width="76.8" height="4" fill="#5f6368" rx="2"/>
+  
+  <!-- 大型AI字样：在笔记内部居中显示 -->
+  <text x="64" y="90" text-anchor="middle" 
+        fill="#ea4335" font-family="Arial, sans-serif" 
+        font-size="64" font-weight="bold" letter-spacing="2">
+    AI
+  </text>
+</svg>
